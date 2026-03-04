@@ -1,0 +1,18 @@
+#include "features.h"
+#include <fstream>
+#include <sstream>
+#include <iostream>
+#include <iomanip>
+#include <algorithm>
+#include <regex>
+#include <set>
+#include <cmath>
+#include <map>
+#include <sys/stat.h>
+
+// Internal help functions for feature extraction
+
+static int countSubstr(const string& haystack, const string& needle)
+{
+    
+}
