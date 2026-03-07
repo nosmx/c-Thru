@@ -16,7 +16,7 @@ struct FeatureSet
     // Code size and structure features
     int total_lines;
     int non_empty_lines;
-    int blank_lines;
+    int blank_lines_count;
     int max_line_length;
     int open_brace_count;
     int close_brace_count;
