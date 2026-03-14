@@ -42,7 +42,7 @@ struct FeatureSet
 
     // Code basic command features
     int include_count;
-    int using_namespace_count;
+    int using_namespace_std;
     int std_prefix_count;
     int cout_count;
     int cin_count;
@@ -53,8 +53,8 @@ struct FeatureSet
     int unique_identifier_count;
 
     // Code indentation and formatting features
-    double indentiation_consistency;
-    int magic_numnber_count;
+    double indentation_consistency;
+    int magic_number_count;
     int max_nesting_depth;
     int function_count;
     int operator_diversity;
