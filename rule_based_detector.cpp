@@ -38,13 +38,13 @@ static const vector<Rule> RULES = {
         "High Comment Density",
         "AI over-comments: more than 25% of lines are comments.",
         12,
-        [](const FeatureSet& f) { return f.comment_density > 0.25; }
+        [](const FeatureSet& f) { return f.comment_density > 0.15; } // changed from 0.25 to 0.15 after observing false negatives
     },
     {
         "Long Average Comment",
         "AI writes verbose, sentence-style comments (avg > 40 chars).",
         8,
-        [](const FeatureSet& f) { return f.average_comment_length > 40.0; }
+        [](const FeatureSet& f) { return f.average_comment_length > 30.0; } // changed from 40 to 30 after observing false negatives 
     },
     {
         "Block Comments Present",
@@ -58,13 +58,13 @@ static const vector<Rule> RULES = {
         "Long Variable Names",
         "AI uses descriptive names (ex. totalSumOfElements vs sum).",
         10,
-        [](const FeatureSet& f) { return f.average_identifier_length > 8.0; }
+        [](const FeatureSet& f) { return f.average_identifier_length > 6.5; } // changed from 8 to 6.5 after observing false negatives
     },
     {
         "High Identifier Diversity",
         "AI create many uniquely named variables, humans reuse names.",
         6,
-        [](const FeatureSet& f) {return f.unique_identifier_count > 20; }
+        [](const FeatureSet& f) {return f.unique_identifier_count > 10; } // changed from 20 to 15 after observing false negatives
     },
 
     // structural cleanliness
@@ -72,7 +72,7 @@ static const vector<Rule> RULES = {
         "Very High Identation Consistency",
         "AI code is perfectly indented, human code is not as consistent.",
         10,
-        [](const FeatureSet& f) { return f.indentation_consistency > 0.90; }
+        [](const FeatureSet& f) { return f.indentation_consistency > 0.70; } // changed from 0.90 to 0.70 after observing false negatives
     },
     {
         "Low Magic Number Count",
@@ -80,12 +80,7 @@ static const vector<Rule> RULES = {
         5,
         [](const FeatureSet& f) { return f.magic_number_count <= 2; }
     },
-    {
-        "Perfectly Balanced Braces",
-        "AI always produces matched brace pairs, human typos can lead to mismatches.",
-        4,
-        [](const FeatureSet& f) { return f.open_brace_count == f.close_brace_count; }
-    },
+    
 
     // control flow patterns
     {
@@ -95,35 +90,21 @@ static const vector<Rule> RULES = {
         [](const FeatureSet& f)
         {
             if (f.if_count == 0) return false;
-            return (double)f.else_count / f.if_count > 0.75;
+            return (double)f.else_count / f.if_count > 0.50; // changed from 0.75 to 0.50 after observing false negatives
         }
     },
     {
         "Moderate Control Density",
         "AI uses a predictable moderate number of control structures (3-15).",
-        5,
+        3,
         [](const FeatureSet& f) { return f.control_count >= 3 && f.control_count <= 15; }
-    },
-
-    // I/O and namespace patterns
-    {
-        "Uses 'using namespace std'",
-        "AI almost always adds 'using namespace std' in beginner c++ code.",
-        6,
-        [](const FeatureSet& f) {return f.using_namespace_std == 1; }
-    },
-    {
-        "Prefers endl over '\\n'",
-        "AI strongly prefers endl; human programmers often mix usage of endl and '\\n'.",
-        5,
-        [](const FeatureSet& f) { return f.endl_count >= f.cout_count; }
     },
 
     // size signals
     {
         "Moderate Program Size",
         "AI CS1 programs cluster between 25-90 non-empty lines.",
-        5,
+        3,
         [](const FeatureSet& f) { return f.non_empty_lines >= 25 && f.non_empty_lines <= 90; }
     },
     {
@@ -141,7 +122,7 @@ static const vector<Rule> RULES = {
     {
         "Shallow Nesting Depth",
         "AI avoids deep nesting, CS1 code stays at 3 or less levels of nesting.",
-        4,
+        2,
         [](const FeatureSet& f) { return f.max_nesting_depth <= 3; }
     },
     {
@@ -195,8 +176,8 @@ static double computeScore(const vector<RuleResult>& results)
 
 static string verdict(double score)
 {
-    if (score >= 0.70) return "Likely AI-generated";
-    if (score >= 0.45) return "Uncertain";
+    if (score >= 0.50) return "Likely AI-generated"; // changed from 0.70 to 0.50 after observing false negatives
+    if (score >= 0.30) return "Uncertain"; // changed from 0.45 to 0.30 to check affect on false negatives 
     return "Likely Human-written";
 }
 
@@ -278,5 +259,4 @@ int main(int argc, char* argv[])
     return 0;
 
 }
-
 
