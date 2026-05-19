@@ -1,5 +1,8 @@
 // feature extractor = reads c++ source code files, extracts 32 measurable features, and prints a formatted report and appends results to a CSV file. 
 
+
+// compile: g++ -std=c++17 -O2 feature_extractor.cpp features.cpp -o feature_extractor
+// usage: 
 #include "features.h"
 
 #include <iostream>
