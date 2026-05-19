@@ -235,7 +235,7 @@ FeatureSet extractFeatures(const string& filepath)
     // higher average = likely to be AI-generated code.
     f.average_comment_length = commentCount > 0 ? (double) commentCharSum / commentCount : 0.0;
 
-    // strip comments of furhter analysis 
+    // strip comments of further analysis 
     string codeOnly = removeLineComments(removeBlockComments(source));
 
     // --control flow features.--
@@ -293,7 +293,7 @@ FeatureSet extractFeatures(const string& filepath)
                 // skip past the whole number
                 size_t j = i;
                 while (j < codeOnly.size() && isdigit((unsigned char)codeOnly[j])) j++;
-                // check if next char is not alphanumeric, underscore or dot.
+                // check if the next char is not alphanumeric, underscore or dot.
                 bool nextOk = (j >= codeOnly.size()) || (!isalnum((unsigned char)codeOnly[j]) && codeOnly[j] != '_' && codeOnly[j] != '.');
                 if (prevOk && nextOk) count++;
                 i = j -1;
